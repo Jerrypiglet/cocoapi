@@ -273,7 +273,13 @@ class COCO:
                             color_mask = np.random.random((1, 3)).tolist()[0]
                         for i in range(3):
                             img[:,:,i] = color_mask[i]
-                        ax.imshow(np.dstack( (img, m*0.5) ))
+                        # print(color_mask)
+                        color.append(color_mask)
+                        # print(color)
+                        # print(img.shape, m.shape, np.dstack( (img*0.5, m*0.8) ).shape)
+                        ax.imshow(np.dstack( (img*0.5, m*0.8) ))
+                        # ax.imshow(np.squeeze(m))
+                        # print(np.amax(m), np.amin(m))
                 if 'keypoints' in ann and type(ann['keypoints']) == list:
                     # turn skeleton into zero-based index
                     sks = np.array(self.loadCats(ann['category_id'])[0]['skeleton'])-1
@@ -290,9 +296,13 @@ class COCO:
             ax.add_collection(p)
             p = PatchCollection(polygons, facecolor='none', edgecolors=color, linewidths=2)
             ax.add_collection(p)
+
+            return color
         elif datasetType == 'captions':
             for ann in anns:
                 print(ann['caption'])
+
+        return 
 
     def loadRes(self, resFile):
         """
